@@ -11,7 +11,17 @@ function abc() {
 /**
  * this;
  *   envRec = GetThisEnvironment();
+ *      let env = runningExecutionContext;
+ *      while(true) {
+ *        let exists = env.hasThisBinding();
+ *        if(exists) {
+ *          return env
+ *        }
+ *        let outer = env.[[OuterEnv]]
+ *        env = outer;
+ *      }
  *   return envRec.GetThisBinding();
+ *      
  */
 
 abc() 
@@ -74,20 +84,39 @@ abc()
  * const arrowFunc = () => { console.log(this) }
  *  let closure = OrdinaryFunctionCreate(%Function.prototype%, sourceText, ArrowParameters, ConciseBody, LEXICAL-THIS, env, privateEnv)
  *      F.[[ThisMode]] = LEXICAL;
- * 
- * 
+ *  return closure
  * 
  * Situation arrowFunc():
  * 
  * return EvaluateCall(arrow, arrowFunc, arguments)
  *    ref is a ReferenceRecord
  *        ref is not PropertyReference
- *            thisValue = ref.[[Base]].WithBaseObject()
+ *            thisValue = ref.[[Base]].WithBaseObject()  <= undefined
  *    Call(func, thisValue, argList)
  * => F.[[Call]](thisValue, argList)
  *        calleeContext = PrepareForOrdinarycall(F, thisValue);
  *        OrdinaryCallBindThis(F, calleeContext, thisValue);
  *            return UNUSED;
+ * 
+ *  this;
+ *   envRec = GetThisEnvironment();
+ *      let env = runningExecutionContext;
+ *        {
+ *          LexicalEnvironment,
+ *          VariableEnvironment,
+ *          PrivateEnvironment,
+ *          outerEnv: nowRuningExecutionContext
+ *        }
+ *              
+ *      while(true) {
+ *        let exists = env.hasThisBinding();
+ *        if(exists) {
+ *          return env
+ *        }
+ *        let outer = env.[[OuterEnv]]
+ *        env = outer;
+ *      }
+ *   return envRec.GetThisBinding();
  */
 
 outerEnv

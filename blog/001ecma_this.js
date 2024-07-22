@@ -107,7 +107,6 @@ abc()
  *          PrivateEnvironment,
  *          outerEnv: nowRuningExecutionContext
  *        }
- *              
  *      while(true) {
  *        let exists = env.hasThisBinding();
  *        if(exists) {

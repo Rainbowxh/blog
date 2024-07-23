@@ -27,7 +27,7 @@ function abc() {
 abc() 
 
 /**
- * abc 
+ * 13.1.3 Runtime Semantics: Evaluation Identifier abc
  *  ResolveBinding(StringValue of Identifier).
  *  env = runningExecutionContext.LexicalEnvironment
  *  return GetIdentifierReference(env, 'abc', strict).

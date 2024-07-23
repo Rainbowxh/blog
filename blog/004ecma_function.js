@@ -80,7 +80,7 @@ abc();
  *  return EvaluateCall(tagFunc, tagRef, TemplateLiteral, tailCall);
  *  
  * 13.3.6.2 EvaluateCall ( func, ref, arguments, tailPosition ) 
- *  if(isReferenceRecord(ref)) {
+ *  if(is Reference Record(ref)) {
  *    if(IsPropertyReference(ref)) {
  *      如果是一个对父的引用，不是则获取[[Base]]
  *      thisValue = GetThisValue();

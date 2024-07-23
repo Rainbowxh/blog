@@ -36,14 +36,15 @@ const kv = new person();
  *  let callerContext = runningExecutionContext
  *  let kind = F.[[ConstructorKind]]
  *  if(kind === BASE) {
- *    根据constructor创建相对应的函数this
- *    let thisArgument = OrdinaryCreateFromConstructor(new Target, Object.prototype);
+ *    生成当前的函数的对象，并且设置当前的原型链
+ *    let thisArgument = OrdinaryCreateFromConstructor(newTarget, Object.prototype);
  *  }
+ *  生成当前的执行环境的base对象
  *  let calleeConext = PrepareForOrdinaryCall(F, newTarget);
  *  if(kind === BASE) {
  *    绑定当前的this环境，function() { this.name = '123' } this指向thisArguments中的对象
  *    OrdinaryCallBindThis(F, calleeContext, thisArgument);
- *  
+ *    执行当前函数，当前函数的this指向thisArguments;
  *    let initializeResult = Completion(InitializeinstanceElements(thisArgument, F));
  *    if(initializeResult === abrupt completion) {
  *      remove calleeContext execution context stack & restore callercontext => running execution context;
@@ -70,7 +71,12 @@ const kv = new person();
  * 10.1.13 OrdinaryCreateFromConstructor
  *  OrdinaryCreateFromConstructor(newTarget, %Object.prototype%)
  *  
- *  设置相对应的对象环境
+ *  设置相对应的对象环境 
+ *  example:
+ *    function Test() {} 
+ *    const test = new Test();
+ *    test.[[Prototype]] = Test.prototype
+ * 
  *  let proto = GetPrototypeFromConstructor(newTarget, %Object.prototype%)
  *  let slotsList = internalSlotsList || new EmptyList();
  *  return OrdinaryObjectCreate(proto, slotsList);
@@ -83,8 +89,9 @@ const kv = new person();
 
 /**
  * 10.1.14 GetPrototypeFromConstructor
+
+ *    
  *  GetPrototypeFromConstructor ( constructor, intrinsicDefaultProto)
- *  
  *  设置当前函数的[[prototype]]
  *  let proto = constructor.prototype
  *  if(isObject(proto)) {
